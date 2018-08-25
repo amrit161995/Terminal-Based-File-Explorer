@@ -53,22 +53,47 @@ printf("\e[1;1H");
   char c;
 dtr_array=populateDir();
 no_of_files=(int)dtr_array.size();
-
+if(no_of_files>=20)
+	printDir(0,19,dtr_array);
+else
+	printDir(0,no_of_files-1,dtr_array);
 printf("\e[1;1H");
-
-
+int low=0;
+int up=19;
+int upperindex=0;
   while (1)
     {
       scanf("%c",&c);
-	
+	if(cursorindex<0)
+		cursorindex=0;
+	if(cursorindex>=no_of_files)
+		cursorindex=no_of_files-1;
      	if (c == 65 && cursorindex>0 ){      
        		printf("\e[1A");
 		cursorindex--;
+		
+		if(cursorindex<upperindex && low>0){
+			low--;
+			up--;
+			printDir(low,up,dtr_array);
+			printf("\e[1;1H");
+		}
 	}
     	if(c == 66 && cursorindex<no_of_files-1){
+		cursorindex++;		
 		printf("\e[1B");
-		cursorindex++;
+		
+		if(cursorindex>=20 && up<no_of_files-1){
+			low++;
+			up++;
+			upperindex=low;
+			printDir(low,up,dtr_array);
+			printf("\e[20;1H");
+		}
+		
+		
 	}
+
  	if(c == 67)
 		printf("right");
  	if(c == 68){
@@ -96,7 +121,14 @@ printf("\e[1;1H");
 		chdir(dtr_array[cursorindex]->d_name);//entering into a directory!
 		dtr_array=populateDir();
 		no_of_files=(int)dtr_array.size();
+		if(no_of_files>=20)
+			printDir(0,19,dtr_array);
+		else
+			printDir(0,no_of_files-1,dtr_array);
 		cursorindex=0;
+		low=0;
+		up=19;
+		upperindex=0;
 	//	stack_top++;
 		
 		printf("\e[1;1H");
@@ -108,7 +140,14 @@ printf("\e[1;1H");
 		chdir("..");//up one level
 		dtr_array=populateDir();
 		no_of_files=(int)dtr_array.size();
+		if(no_of_files>20)
+			printDir(0,19,dtr_array);
+		else
+			printDir(0,no_of_files-1,dtr_array);
 		cursorindex=0;
+		low=0;
+		up=19;
+		upperindex=0;
 		printf("\e[1;1H");
 	}
 
@@ -123,6 +162,7 @@ printf("\e[1;1H");
 }
 int main (int a,char **ar)
 {
+
 set_input_mode ();
 cursor();
 

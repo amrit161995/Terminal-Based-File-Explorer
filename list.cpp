@@ -93,6 +93,35 @@ vector <struct dirent*> populateDir(){
 return dtr_array;
 }
 
+void printDir(int lower,int upper,vector <struct dirent*> dtr_array){
+	
+	struct dirent *dtr;
+	struct stat f_info;
+	printf("\033[2J");
+	printf("\e[1;1H");
+	DIR *dir=opendir(".");
+	//chdir(args[1]);
+	if(dir==NULL)
+		cout<<"Cannot display file"<<endl;
+	else{
+		for(int i=lower;i<=upper;i++){
+			stat(dtr_array[i]->d_name, &f_info);
+			fileName(dtr_array[i]);
+			permissions(dtr_array[i],f_info);
+			ownership(f_info.st_uid,f_info.st_gid);
+			sizeInKB(f_info);
+			lastModified(f_info);
+					
+		
+		}
+		
+
+
+	}
+	closedir(dir);
+
+
+}
 
 
 
