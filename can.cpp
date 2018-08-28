@@ -124,7 +124,8 @@ while (1)
 		
 	}
 
- 	if(c == 67){						//right arrow key
+ 	if(c == 67){
+		dirStack_b.push_back(realpath(getPath().c_str(),NULL));						//right arrow key
 		if(!dirStack_f.empty()){
 			path=dirStack_f[dirStack_f.size()-1];
 			dirStack_f.pop_back();
@@ -215,12 +216,4 @@ while (1)
 
 }
 
-int main (int a,char **ar)
-{
-
-set_input_mode ();
-cursor();
-
-  return 0;
-}
 

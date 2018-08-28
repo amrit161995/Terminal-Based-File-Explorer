@@ -12,13 +12,14 @@ int command_mode()
         	command.push_back(token);
     	if(command[0]=="goto"){
 		printf("\033[2J");
+		goto_fun(command[1]);
 		printf("\e[23;1H");
 		printf("COMMAND MODE\n");
 		printf("\e[24;1H");
 		printf(":");
-		printf("\e[1;1H");
-		goto_fun(command[1]);
-		printf("\e[24;2H");
+		//printf("\e[1;1H");
+		
+		
 		command_mode();
 	}
 	return 0;
