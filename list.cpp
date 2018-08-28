@@ -37,7 +37,7 @@ void ownership(int uid,int gid){
 void sizeInKB(struct stat f_info){
 	float sizeKB;
 	sizeKB=(float)f_info.st_size/1024;
-	printf("%10fKB",sizeKB);
+	printf("%7.2fKB",sizeKB);
 }
 
 void lastModified(struct stat f_info){

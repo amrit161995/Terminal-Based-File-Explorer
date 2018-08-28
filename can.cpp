@@ -9,8 +9,9 @@
 #include"list.cpp"
 #include <sys/stat.h>
 #include <algorithm>
+#include <bits/stdc++.h>
 #include <limits.h>
-
+#include"command_mode.cpp" 
 struct termios saved_attributes;
 vector <string> dirStack_f;		//forward
 vector <string> dirStack_b;		//backward
@@ -62,12 +63,13 @@ void cursor(){
 	string path;
 	struct stat f_info;
 	char c;
+	dirStack_b.push_back(getenv("PWD"));
 	DIRECTORY:
 	int cursorindex=0;
 	
 	printf("\033[2J");
 	printf("\e[1;1H");
-  	
+  	//printf("%s\n",getPath().c_str());
 	
 	dtr_array=populateDir();
 	no_of_files=(int)dtr_array.size();
@@ -82,8 +84,7 @@ void cursor(){
 	int low=0;
 	int up=19;
 	int upperindex=0;
-	//dirStack_b.push("/");
-    while (1)
+while (1)
     {
       scanf("%c",&c);
 	if(cursorindex<0)
@@ -91,7 +92,7 @@ void cursor(){
 	if(cursorindex>=no_of_files)
 		cursorindex=no_of_files-1;
 
-     	if (c == 65 && cursorindex>0 ){      			//up arrow key
+     	if (c == 65 && cursorindex>0){      			//up arrow key
        		printf("\e[1A");
 		cursorindex--;
 		
@@ -123,19 +124,28 @@ void cursor(){
 		
 	}
 
- 	if(c == 67)							//right arrow key
-		printf("right");
-
-
- 	if(c == 68){							//left arrow key
-		//printf("left");
-		
-		if(!dirStack_b.empty()){
-			path=dirStack_b[dirStack_b.size()-1];
-			dirStack_b.pop_back(); 
+ 	if(c == 67){						//right arrow key
+		if(!dirStack_f.empty()){
+			path=dirStack_f[dirStack_f.size()-1];
+			dirStack_f.pop_back();
 			chdir(path.c_str());
 			goto DIRECTORY;
+		}
+
+	}
+ 	if(c == 68){							//left arrow key
+		if(!dirStack_b.empty()){
 			
+			if(dirStack_b.size()>1){
+				
+				dirStack_f.push_back(dirStack_b[dirStack_b.size()-1]);
+				dirStack_b.pop_back();
+			
+				path=dirStack_b[dirStack_b.size()-1];
+				
+			chdir(path.c_str());
+			goto DIRECTORY;
+			}
 			//cout<<dirStack_b.size();
 			
 			
@@ -150,12 +160,10 @@ void cursor(){
 	if(c=='\n'){									//enter key pressed
 		stat(dtr_array[cursorindex]->d_name,&f_info);
 		if(S_ISDIR(f_info.st_mode)){
-			path=getPath();
-			//if(path!="/home/amrit")
-			
+			path=realpath(dtr_array[cursorindex]->d_name,NULL);
+			dirStack_b.push_back(path);
 			//cout<<path;
 			chdir(dtr_array[cursorindex]->d_name);//entering into a directory!
-			//dirStack_b.push_back(path);
 			goto DIRECTORY;
 			//printf("hello");
 			
@@ -175,7 +183,7 @@ void cursor(){
 	
 	if(c==127){
 							//backspace key								
-		//dirStack_b.push(getPath());
+		dirStack_b.push_back(realpath(getPath().c_str(),NULL));
 		chdir("..");//up one level
 		goto DIRECTORY;
 	}
@@ -199,10 +207,11 @@ void cursor(){
 	}
 	
     }
+
 	if(c==';' || c==':'){
-		string s;	
-		cin>>s;
+		command_mode();
 	}
+	
 
 }
 
