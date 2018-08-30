@@ -11,7 +11,15 @@
 using namespace std;
 
 //to convert size from bytes to KB
+string getPath(){
+ char cwd[PATH_MAX];
+  string a;
+   if (getcwd(cwd, sizeof(cwd)) != NULL) {
+	a=cwd;
+     return a;
+   }
 
+}
 
 void permissions(struct dirent *dtr,struct stat f_info){
 	stat(dtr->d_name, &f_info);
@@ -99,6 +107,7 @@ void printDir(int lower,int upper,vector <struct dirent*> dtr_array){
 	struct stat f_info;
 	printf("\033[2J");
 	printf("\e[1;1H");
+	printf("%s\n",realpath(getPath().c_str(),NULL));
 	DIR *dir=opendir(".");
 	//chdir(args[1]);
 	if(dir==NULL)

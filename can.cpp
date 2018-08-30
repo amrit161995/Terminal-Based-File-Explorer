@@ -17,15 +17,7 @@ vector <string> dirStack_f;		//forward
 vector <string> dirStack_b;		//backward
 
 
-string getPath(){
- char cwd[PATH_MAX];
-  string a;
-   if (getcwd(cwd, sizeof(cwd)) != NULL) {
-	a=cwd;
-     return a;
-   }
 
-}
 void reset_input_mode (void)
 {
   tcsetattr (STDIN_FILENO, TCSANOW, &saved_attributes);
@@ -79,7 +71,7 @@ void cursor(){
 		printDir(0,no_of_files-1,dtr_array);
 	printf("\e[24;1H");
 	printf("NORMAL MODE");
-	printf("\e[1;1H");
+	printf("\e[2;1H");
 	
 	int low=0;
 	int up=19;
@@ -102,7 +94,7 @@ while (1)
 			printDir(low,up,dtr_array);
 			printf("\e[24;1H");
 			printf("NORMAL MODE");
-			printf("\e[1;1H");
+			printf("\e[2;1H");
 		}
 	}
 
@@ -118,7 +110,7 @@ while (1)
 			printDir(low,up,dtr_array);
 			printf("\e[24;1H");
 			printf("NORMAL MODE");
-			printf("\e[20;1H");
+			printf("\e[21;1H");
 		}
 		
 		
@@ -202,6 +194,7 @@ while (1)
 	}
 
 	if(c=='h'){
+		dirStack_b.push_back(realpath(getPath().c_str(),NULL));
 		chdir(getenv("PWD"));
 		goto DIRECTORY;	
 
@@ -210,7 +203,8 @@ while (1)
     }
 
 	if(c==';' || c==':'){
-		command_mode();
+		//set_input_mode();
+		command_mode(realpath(getPath().c_str(),NULL));
 	}
 	
 

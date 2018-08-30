@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include<iostream>
-
 using namespace std;
 
 int goto_fun(string path){
@@ -28,7 +27,7 @@ int goto_fun(string path){
 			printDir(0,no_of_files-1,dtr_array);
 	}
 	
-return 0;
+return 1;
 }
 
 
