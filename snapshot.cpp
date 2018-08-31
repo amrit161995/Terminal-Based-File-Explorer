@@ -1,60 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include<iostream>
 #include<dirent.h>
 #include<string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include<time.h>
 #include<vector>
 #include <pwd.h>
+#include<unistd.h>
 #include <grp.h>
 #include <unistd.h>
 using namespace std;
 
-void populateDir(string path){
-	vector <struct dirent*> dtr_array;
-	struct dirent *dtr;
-	struct stat f_info;
-	chdir(realpath(path.c_str(),NULL));
-	DIR *dir=opendir(".");
-	if(dir==NULL)
-		cout<<"Cannot display file"<<endl;
-	else{
-		while(dtr=readdir(dir)){
-			//dtr_array.push_back(dtr);
-			stat(dtr->d_name, &f_info);
+
+void snapshot(FILE *fptr,string source,string path,int slength){
+	struct dirent *dtr,*dtr1;
+	struct stat f_info,f_info1;
+	string path1,path2;
+	chdir(path.c_str());
+	stat(source.c_str(), &f_info);
+	
+
+	if(S_ISDIR(f_info.st_mode)){
+	chdir(source.c_str());
 			
-			if(dtr->d_type==DT_DIR){
-				//cout<<"a";
+	
+	DIR *dir=opendir(".");
+	
+	//source=getPath();
+	while((dtr=readdir(dir))!=NULL){
+			
+			stat(dtr->d_name, &f_info1);
+			if(dtr->d_name[0]=='.')
+					continue;
+				fprintf(fptr,"%s	",dtr->d_name);
+			
+	
+	}
+	
+	fprintf(fptr,"\n\n");
+	chdir(source.c_str());
+	DIR *dir1=opendir(".");
+	while((dtr=readdir(dir1))!=NULL){
+	if(dtr->d_type == DT_DIR){
+				
 				if(dtr->d_name[0]=='.')
 					continue;
-				//chdir(dtr->d_name);
-				cout<<"-----------------"<<endl;		
-				cout<<dtr->d_name<<endl;
-				cout<<"-----------------"<<endl;
-				populateDir(dtr->d_name);
-				//cout<<endl;
-			}
-			else
-				cout<<dtr->d_name<<endl;
+				
+				path2=realpath(dtr->d_name,NULL);
+				path2=path2.replace(0,slength,".");
+				fprintf(fptr,"%s: \n",path2.c_str());
+				path1=source+"/"+dtr->d_name;
+				snapshot(fptr,path1,path,slength);
+				
 			
-					
-		
-		}
-		
-
-
+				
+			}
+			
+	
 	}
-	closedir(dir);
-
-//return dtr_array;
+	//relative=rel;
+	chdir("..");
+	closedir(dir1);
 }
-int main()
-{
-populateDir("/home/amrit/Desktop/project");
+return;
 }
-
-
-
 
 
 

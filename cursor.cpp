@@ -209,7 +209,8 @@ while (1)
 		//set_input_mode();
 		command_mode(realpath(getPath().c_str(),NULL));
 	}
-	
+
+
 
 }
 
