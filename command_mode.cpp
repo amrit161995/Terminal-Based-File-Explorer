@@ -2,6 +2,7 @@
 #include"com_goto.cpp"
 #include"create.cpp"
 #include"rename.cpp"
+#include"copy.cpp"
 #include<dirent.h>
 #include<vector>
 #include"command_mode.h"
@@ -67,6 +68,23 @@ int command_mode(string path)
 	if(command[0]=="rename"){
 		printf("\033[2J");
 		rename_fun(command[1],command[2]);
+		chdir(path.c_str());
+		dtr_array=populateDir();
+		int no_of_files=(int)dtr_array.size();
+		if(no_of_files>=20)
+			printDir(0,19,dtr_array);
+		else	
+			printDir(0,no_of_files-1,dtr_array);
+		printf("\e[23;1H");
+		printf("COMMAND MODE\n");
+		printf("\e[24;1H");
+		printf(":");
+		command_mode(path);	
+	}
+
+	if(command[0]=="copy"){
+		printf("\033[2J");
+		copy(command[1],command[2]);
 		chdir(path.c_str());
 		dtr_array=populateDir();
 		int no_of_files=(int)dtr_array.size();
