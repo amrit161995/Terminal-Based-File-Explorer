@@ -6,24 +6,27 @@
 #include <termios.h>
 #include<iostream>
 #include <stack>
-#include"list.cpp"
+#include"list.h"
 #include <sys/stat.h>
 #include <algorithm>
 #include <bits/stdc++.h>
 #include <limits.h>
-#include"command_mode.cpp" 
+#include"command_mode.h" 
+#include"cursor.h"
+
+using namespace std;
 struct termios saved_attributes;
 vector <string> dirStack_f;		//forward
 vector <string> dirStack_b;		//backward
 
 
 
-void reset_input_mode (void)
+void reset_input_mode()
 {
   tcsetattr (STDIN_FILENO, TCSANOW, &saved_attributes);
 }
 
-void set_input_mode (void)
+void set_input_mode()
 {
 
   struct termios tattr;
@@ -49,7 +52,7 @@ void set_input_mode (void)
 
 void cursor(){
 	
-	
+	set_input_mode();
 	vector<struct dirent*> dtr_array;
 	int no_of_files;
 	string path;

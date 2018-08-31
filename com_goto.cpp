@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include<iostream>
+#include"list.h"
+#include"cursor.h"
 using namespace std;
 
 int goto_fun(string path){
@@ -10,21 +12,11 @@ int goto_fun(string path){
 	int no_of_files;
 	if(path=="/"){
 		chdir(getenv("PWD"));
-		dtr_array=populateDir();
-		no_of_files=(int)dtr_array.size();
-		if(no_of_files>=20)
-			printDir(0,19,dtr_array);
-		else	
-			printDir(0,no_of_files-1,dtr_array);
+		cursor();
 	}
 	else{
 		chdir(path.c_str());
-		dtr_array=populateDir();
-		no_of_files=(int)dtr_array.size();
-		if(no_of_files>=20)
-			printDir(0,19,dtr_array);
-		else
-			printDir(0,no_of_files-1,dtr_array);
+		cursor();
 	}
 	
 return 1;

@@ -8,6 +8,7 @@
 #include <pwd.h>
 #include <grp.h>
 #include <unistd.h>
+#include"list.h"
 using namespace std;
 
 //to convert size from bytes to KB

@@ -5,12 +5,12 @@
 #include<iostream>
 #include <stack>
 #include <bits/stdc++.h>
-#include"can.cpp"
-
-int main (int a,char **ar)
+#include"cursor.h"
+using namespace std;
+int main ()
 {
 
-set_input_mode ();
+//set_input_mode ();
 cursor();
 
   return 0;

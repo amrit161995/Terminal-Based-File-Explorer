@@ -4,6 +4,9 @@
 #include"rename.cpp"
 #include<dirent.h>
 #include<vector>
+#include"command_mode.h"
+#include"cursor.h"
+#include"list.h"
 using namespace std;
 int command_mode(string path)
 {	vector<struct dirent *> dtr_array;
