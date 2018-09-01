@@ -2,7 +2,7 @@
 #include"com_goto.cpp"
 #include"create.cpp"
 #include"rename.cpp"
-#include"copy.cpp"
+#include"move.cpp"
 #include"snapshot.cpp"
 #include<dirent.h>
 #include<vector>
@@ -107,6 +107,49 @@ int command_mode(string path)
 		if(command.size()>2){
 			for(int i=0;i<command.size()-2;i++)
 				copy(command[i+1],command[command.size()-1]);
+		}
+		chdir(path.c_str());
+		dtr_array=populateDir();
+		int no_of_files=(int)dtr_array.size();
+		if(no_of_files>=20)
+			printDir(0,19,dtr_array);
+		else	
+			printDir(0,no_of_files-1,dtr_array);
+		printf("\e[23;1H");
+		printf("COMMAND MODE\n");
+		printf("\e[24;1H");
+		printf(":");
+		command_mode(path);	
+	}
+	
+	else if(command[0]=="move"){
+		printf("\033[2J");
+		if(command.size()>2){
+			for(int i=0;i<command.size()-2;i++){
+				copy(command[i+1],command[command.size()-1]);
+				delete_fun(command[i+1]);
+				rmdir(command[i+1].c_str());
+			}
+		}
+		chdir(path.c_str());
+		dtr_array=populateDir();
+		int no_of_files=(int)dtr_array.size();
+		if(no_of_files>=20)
+			printDir(0,19,dtr_array);
+		else	
+			printDir(0,no_of_files-1,dtr_array);
+		printf("\e[23;1H");
+		printf("COMMAND MODE\n");
+		printf("\e[24;1H");
+		printf(":");
+		command_mode(path);	
+	}
+
+	else if(command[0]=="delete"){
+		printf("\033[2J");
+		if(command.size()>1){
+			delete_fun(command[1]);
+			rmdir(command[1].c_str());
 		}
 		chdir(path.c_str());
 		dtr_array=populateDir();

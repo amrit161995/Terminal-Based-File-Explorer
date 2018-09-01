@@ -12,9 +12,9 @@
 #include <unistd.h>
 using namespace std;
 
-struct dirent *dtr,*dtr1;
-struct stat f_info,f_info1;
-string path1,path2;
+struct dirent *dtrc,*dtr1c;
+struct stat f_infoc,f_info1c;
+string path1c,path2c;
 
 void copy_file(char source[100],char target[100]){
 FILE *fptr1, *fptr2;
@@ -50,50 +50,50 @@ return;
 }
 
 void copy_dir(string source,string target){
-	
-	stat(source.c_str(), &f_info);
+	target=realpath(target.c_str(),NULL);
+	stat(source.c_str(), &f_infoc);
 	
 
-	if(S_ISDIR(f_info.st_mode)){
+	if(S_ISDIR(f_infoc.st_mode)){
 				mkdir((target+"/"+source).c_str(),0777);
 				chdir(source.c_str());
 			
 	
 	
-	DIR *dir=opendir(".");
+	DIR *dirc=opendir(".");
 
 	//source=getPath();
-	while((dtr=readdir(dir))!=NULL){
-			stat(dtr->d_name, &f_info1);
-			if(dtr->d_type==DT_REG) {	
+	while((dtrc=readdir(dirc))!=NULL){
+			stat(dtrc->d_name, &f_info1c);
+			if(dtrc->d_type==DT_REG) {	
 				
-				string target2=target+"/"+source+"/"+dtr->d_name;
+				string target2=target+"/"+source+"/"+dtrc->d_name;
 				char *tar = new char[target2.length() + 1]; 
 				strcpy(tar, target2.c_str());
-				copy_file(dtr->d_name,tar);
+				copy_file(dtrc->d_name,tar);
 				
 			}
 			else{
-			path1=target+"/"+source;
+			path1c=target+"/"+source;
 				
-				if(strcmp(dtr->d_name,".")==0 || strcmp(dtr->d_name,"..")==0)
+				if(strcmp(dtrc->d_name,".")==0 || strcmp(dtrc->d_name,"..")==0)
 					continue;
 				
-				copy_dir(dtr->d_name,path1);
+				copy_dir(dtrc->d_name,path1c);
 			}
 	
 	}
 		
 	chdir("..");
-	closedir(dir);
+	closedir(dirc);
 	}
 	
 return;
 }
 
 void copy(string source,string target){
-stat(source.c_str(), &f_info);
-	if(S_ISDIR(f_info.st_mode))
+stat(source.c_str(), &f_infoc);
+	if(S_ISDIR(f_infoc.st_mode))
 		copy_dir(source,target);
 	else{
 		string target3=target+"/"+source;
@@ -105,5 +105,4 @@ stat(source.c_str(), &f_info);
 			
 	}
 }
-
 
