@@ -108,7 +108,11 @@ void printDir(int lower,int upper,vector <struct dirent*> dtr_array){
 	struct stat f_info;
 	printf("\033[2J");
 	printf("\e[1;1H");
-	printf("%s\n",realpath(getPath().c_str(),NULL));
+	string relative=getenv("PWD");
+	int len=relative.length();
+	string absolute=realpath(getPath().c_str(),NULL);
+	string disppath=absolute.replace(0,len,".");
+	printf("%s\n",disppath.c_str());
 	DIR *dir=opendir(".");
 	//chdir(args[1]);
 	if(dir==NULL)

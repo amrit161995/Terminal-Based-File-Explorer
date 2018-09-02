@@ -145,10 +145,30 @@ int command_mode(string path)
 		command_mode(path);	
 	}
 
-	else if(command[0]=="delete"){
+	else if(command[0]=="delete_file"){
 		printf("\033[2J");
 		if(command.size()>1){
-			delete_fun(command[1]);
+			delete_file(command[1]);
+			//rmdir(command[1].c_str());
+		}
+		chdir(path.c_str());
+		dtr_array=populateDir();
+		int no_of_files=(int)dtr_array.size();
+		if(no_of_files>=20)
+			printDir(0,19,dtr_array);
+		else	
+			printDir(0,no_of_files-1,dtr_array);
+		printf("\e[23;1H");
+		printf("COMMAND MODE\n");
+		printf("\e[24;1H");
+		printf(":");
+		command_mode(path);	
+	}
+
+	else if(command[0]=="delete_dir"){
+		printf("\033[2J");
+		if(command.size()>1){
+			delete_dir(command[1]);
 			rmdir(command[1].c_str());
 		}
 		chdir(path.c_str());

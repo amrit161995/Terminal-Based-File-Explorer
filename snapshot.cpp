@@ -14,6 +14,7 @@ using namespace std;
 
 
 void snapshot(FILE *fptr,string source,string path,int slength){
+	source=realpath(source.c_str(),NULL);	
 	struct dirent *dtr,*dtr1;
 	struct stat f_info,f_info1;
 	string path1,path2;
