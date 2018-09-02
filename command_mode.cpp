@@ -36,8 +36,13 @@ int command_mode(string path)
 	}
     	if(command[0]=="goto"){
 		printf("\033[2J");
-		if(command.size()>1)
+		if(command.size()>1){
+			if(command[1][0]=='~')
+				command[1].erase(0,1);
+			if(command[1][0]=='/')
+				command[1].erase(0,1);
 			goto_fun(command[1]);
+		}
 		printf("\e[23;1H");
 		printf("COMMAND MODE\n");
 		printf("\e[24;1H");
@@ -47,8 +52,13 @@ int command_mode(string path)
 
 	else if(command[0]=="create_file"){
 		printf("\033[2J");
-		if(command.size()>2)
+		if(command.size()>2){
+			if(command[2][0]=='~')
+				command[2].erase(0,1);
+			if(command[2][0]=='/')
+				command[2].erase(0,1);
 			create_file(command[1],command[2]);
+		}
 		chdir(path.c_str());
 		dtr_array=populateDir();
 		int no_of_files=(int)dtr_array.size();
@@ -67,8 +77,13 @@ int command_mode(string path)
 	
 	else if(command[0]=="create_dir"){
 		printf("\033[2J");
-		if(command.size()>2)
+		if(command.size()>2){
+			if(command[2][0]=='~')
+				command[2].erase(0,1);
+			if(command[2][0]=='/')
+				command[2].erase(0,1);
 			create_dir(command[1],command[2]);
+		}
 		chdir(path.c_str());
 		dtr_array=populateDir();
 		int no_of_files=(int)dtr_array.size();
@@ -105,6 +120,10 @@ int command_mode(string path)
 	else if(command[0]=="copy"){
 		printf("\033[2J");
 		if(command.size()>2){
+			if(command[command.size()-1][0]=='~')
+				command[command.size()-1].erase(0,1);
+			if(command[command.size()-1][0]=='/')
+				command[command.size()-1].erase(0,1);
 			for(int i=0;i<command.size()-2;i++)
 				copy(command[i+1],command[command.size()-1]);
 		}
@@ -125,6 +144,10 @@ int command_mode(string path)
 	else if(command[0]=="move"){
 		printf("\033[2J");
 		if(command.size()>2){
+			if(command[command.size()-1][0]=='~')
+				command[command.size()-1].erase(0,1);
+			if(command[command.size()-1][0]=='/')
+				command[command.size()-1].erase(0,1);
 			for(int i=0;i<command.size()-2;i++){
 				copy(command[i+1],command[command.size()-1]);
 				delete_fun(command[i+1]);
@@ -148,6 +171,10 @@ int command_mode(string path)
 	else if(command[0]=="delete_file"){
 		printf("\033[2J");
 		if(command.size()>1){
+			if(command[1][0]=='~')
+				command[1].erase(0,1);
+			if(command[1][0]=='/')
+				command[1].erase(0,1);
 			delete_file(command[1]);
 			//rmdir(command[1].c_str());
 		}
@@ -168,6 +195,11 @@ int command_mode(string path)
 	else if(command[0]=="delete_dir"){
 		printf("\033[2J");
 		if(command.size()>1){
+			if(command[1][0]=='~')
+				command[1].erase(0,1);
+			if(command[1][0]=='/')
+				command[1].erase(0,1);
+			
 			delete_dir(command[1]);
 			rmdir(command[1].c_str());
 		}
@@ -189,6 +221,14 @@ int command_mode(string path)
 		printf("\033[2J");
 		FILE *fptr;
 		if(command.size()>2){
+			if(command[1][0]=='~')
+				command[1].erase(0,1);
+			if(command[1][0]=='/')
+				command[1].erase(0,1);
+			if(command[2][0]=='~')
+				command[2].erase(0,1);
+			if(command[2][0]=='/')
+				command[2].erase(0,1);
 			string source=command[1];
 		
    			fptr = fopen(command[2].c_str(),"w");
