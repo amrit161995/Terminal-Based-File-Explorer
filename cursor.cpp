@@ -156,6 +156,8 @@ while (1)
 	if(c=='\n'){									//enter key pressed
 		stat(dtr_array[cursorindex]->d_name,&f_info);
 		if(S_ISDIR(f_info.st_mode)){
+			if(strcmp("..",dtr_array[cursorindex]->d_name)==0 && strcmp(realpath(getPath().c_str(),NULL),getenv("PWD"))==0)
+				continue;
 			path=realpath(dtr_array[cursorindex]->d_name,NULL);
 			dirStack_b.push_back(path);
 			//cout<<path;
@@ -178,7 +180,8 @@ while (1)
 	}
 	
 	if(c==127){
-							//backspace key								
+		if(strcmp(realpath(getPath().c_str(),NULL),getenv("PWD"))==0)
+				continue;				//backspace key								
 		dirStack_b.push_back(realpath(getPath().c_str(),NULL));
 		chdir("..");//up one level
 		goto DIRECTORY;

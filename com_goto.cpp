@@ -15,7 +15,10 @@ int goto_fun(string path){
 		cursor();
 	}
 	else{
-		chdir(path.c_str());
+		string relative=realpath(path.c_str(),NULL);
+		string root=getenv("PWD");
+		if(relative.substr(0,root.length())==root)
+			chdir(path.c_str());
 		cursor();
 	}
 	
