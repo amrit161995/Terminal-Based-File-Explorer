@@ -34,13 +34,14 @@ int command_mode(string path)
 		printf(":");
 		command_mode(path);
 	}
-    	if(command[0]=="goto"){
+    if(command[0]=="goto"){
 		printf("\033[2J");
 		if(command.size()>1){
 			if(command[1][0]=='~')
 				command[1].erase(0,1);
-			if(command[1][0]=='/')
+			if(command[1][0]=='/' && command[1].length()>1)
 				command[1].erase(0,1);
+			
 			goto_fun(command[1]);
 		}
 		printf("\e[23;1H");
